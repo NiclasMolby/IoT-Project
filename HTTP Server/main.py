@@ -14,9 +14,6 @@ nets = wlan.scan()
 print()
 
 for net in nets:
-    #print(cred[0])
-    #print(net.ssid)
-    #print(net.ssid == cred[0].rstrip())
     if net.ssid == data["ssid"]:
         print('Network found!')
         wlan.connect(net.ssid, auth=(net.sec, data["password"]), timeout=5000)
@@ -24,8 +21,6 @@ for net in nets:
         print('Connecting...')
         while not wlan.isconnected():
             pass
-            #time.sleep(1)
-            #machine.idle() # save power while waiting
         
         if wlan.isconnected():
             print()
@@ -38,8 +33,8 @@ for net in nets:
               print("/test served")
               httpResponse.WriteResponseOk(content="Hi fra Pycom")
 
-            mws = MicroWebSrv()      # TCP port 80 and files in /flash/www
-            mws.Start(threaded=True) # Starts server in a new thread
+            mws = MicroWebSrv()
+            mws.Start(threaded=True) 
 
 
 
