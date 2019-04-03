@@ -18,16 +18,14 @@ for net in nets:
         print('Network found!')
         wlan.connect(net.ssid, auth=(net.sec, data["password"]), timeout=5000)
 
-        print('Connecting...')
+        print('Connecting...\n')
         while not wlan.isconnected():
             pass
         
         if wlan.isconnected():
-            print()
-            print('Connected!')
-            print()
-            print("Starting server on " + wlan.ifconfig()[0])
-            print()
+            print('Connected!\n')
+            print("Starting server on " + wlan.ifconfig()[0] + "\n")
+
             @MicroWebSrv.route('/test')
             def handlerFuncGet(httpClient, httpResponse) :
               print("/test served")
