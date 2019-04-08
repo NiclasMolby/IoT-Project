@@ -1,5 +1,6 @@
 from lib.microWebSrv import MicroWebSrv
 from network import WLAN
+from cup import Cup
 import socket
 import pycom
 import time
@@ -23,8 +24,25 @@ for net in nets:
             pass
         
         if wlan.isconnected():
+            cup = Cup()
             print('Connected!\n')
             print("Starting server on " + wlan.ifconfig()[0] + "\n")
+
+            @MicroWebSrv.route('/light')
+            def lightCup(httpClient, httpResponse):
+              cup.turnOn()
+              httpResponse.WriteResponseOk(content="Light is white")
+            
+            @MicroWebSrv.route('/black')
+            def turnoffLightCup(httpClient, httpResponse):
+              cup.turnOff()
+              httpResponse.WriteResponseOk(content="Light is turned off")
+
+            @MicroWebSrv.route('/tempThreshold', 'POST')
+            def setCupTempThreshold(httpClient, httpResponse):
+              thresholds = httpClient.ReadRequestContentAsJSON()
+              cup.setThresholds(thresholds["lower"], thresholds["upper"])
+              httpResponse.WriteResponseOk(content="Thresholds sat to lower: " + str(thresholds["lower"]) + " and upper: " + str(thresholds["upper"]))
 
             @MicroWebSrv.route('/test')
             def handlerFuncGet(httpClient, httpResponse) :
