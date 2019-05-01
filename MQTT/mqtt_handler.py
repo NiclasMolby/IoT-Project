@@ -16,6 +16,9 @@ def on_subscribe(mqttc, obj, mid, granted_qos):
 def on_log(mqttc, obj, level, string):
     print(string)
 
+###
+#MQTT messages
+###
 
 def on_message(mqttc, obj, msg):
     print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))

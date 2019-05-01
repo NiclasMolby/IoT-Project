@@ -1,7 +1,7 @@
 import pycom
 import machine
 import time
-import tempMeasurer
+import temp_measurer
 
 class Cup:
 
@@ -28,7 +28,7 @@ class Cup:
         #self.startTempMeasuring()
 
     def startTempMeasuring(self):
-        tempMeasurer.begin_measure(self)
+        temp_measurer.begin_measure(self)
 
     def getLocation(self):
         return self.location
