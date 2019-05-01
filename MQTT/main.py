@@ -1,5 +1,4 @@
 from network import WLAN
-from cup import Cup
 import mqtt_handler
 
 import pycom
@@ -24,7 +23,6 @@ for net in nets:
             pass
         
         if wlan.isconnected():
-            cup = Cup()
             print('Connected!\n')
             print("Initializing MQTT\n")
             mqtt_handler.initMQTT()
