@@ -44,6 +44,11 @@ for net in nets:
               cup.setThresholds(thresholds["lower"], thresholds["upper"])
               httpResponse.WriteResponseOk(content="Thresholds sat to lower: " + str(thresholds["lower"]) + " and upper: " + str(thresholds["upper"]))
 
+            @MicroWebSrv.route('/location')
+            def getCupLocation(httpClient, httpResponse):
+              jsonResponse = json.dumps(cup.getLocation())
+              httpResponse.WriteResponseJSONOk(obj=jsonResponse)
+
             @MicroWebSrv.route('/test')
             def handlerFuncGet(httpClient, httpResponse) :
               print("/test served")
