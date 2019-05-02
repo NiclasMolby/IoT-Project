@@ -16,10 +16,10 @@ class Cup:
         pass
         self.startTempMeasuring()
 
-    def turnOn(self):
+    def thresholdViolated(self):
         pycom.rgbled(0xffffff)
 
-    def turnOff(self):
+    def thresholdSatisfied(self):
         pycom.rgbled(0x000000)
 
     def setThresholds(self, lower, upper):

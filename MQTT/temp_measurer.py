@@ -12,12 +12,12 @@ def begin_thread(cup):
     while(True):
         val = apin.voltage()
         temp = int(val / 10)
-        print(temp)
+        print("Temp: " + str(temp))
         if cup.lowerTempThreshold is not None:
                 if cup.lowerTempThreshold > temp:
-                        cup.turnOn()
+                        cup.thresholdViolated()
                 else:
-                        cup.turnOff()
+                        cup.thresholdSatisfied()
         #print((val - 500)/10)
         #print(((val * 1100) / 4096 - 500) / 10)
         time.sleep(2)

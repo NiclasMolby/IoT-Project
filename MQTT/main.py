@@ -4,6 +4,8 @@ import mqtt_handler
 import pycom
 import time
 import json
+import sys
+#print(sys.version)
 
 pycom.heartbeat(False)
 
