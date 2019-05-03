@@ -6,23 +6,33 @@ from lib.mqtt import MQTTClient
 cup = None
 client = None
 
-def initMQTT():
-    client = MQTTClient("CleverCup", "broker.hivemq.com", port=1883)
-    #client.settimeout = settimeout
-    client.set_callback(sub_cb)
-    client.connect()
-    client.subscribe(topic="smartCup/location")
+topicMap = {
+    "cleverCup/location": on_message_location,
+    "cleverCup/threshold": on_message_threshold
+}
 
+def init_MQTT():
+    client = MQTTClient("CleverCup", "broker.hivemq.com", port=1883)
+    client.set_callback(on_message)
+    client.connect()
+    #client.subscribe(topic="cleverCup/location")
+    subscribe(client)
     cup = Cup()
+
     while True:
-#     print("Sending ON")
-#     client.publish("/lights", "ON")
-#     time.sleep(1)
-#     print("Sending OFF")
-#     client.publish("/lights", "OFF")
-#     time.sleep(1)
         client.check_msg()
 
-def sub_cb(topic, msg):
-   print("Message: " + str(msg))
+def on_message(topic, msg):
+    topicMap[topic](msg)
+    print("Message: " + str(msg))
 
+def on_message_location(msg):
+    client.publish("cleverCup/location/response", cup.get_location())
+
+def on_message_threshold(msg):
+    thresholds = json.loads(str(msg))
+    cup.set_thresholds(thresholds['lower'], thresholds['upper'])
+
+def subscribe(client):
+    for key in topicMap.keys(): 
+        client.subscribe(topic=key)

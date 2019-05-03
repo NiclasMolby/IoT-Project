@@ -14,21 +14,21 @@ class Cup:
 
     def __init__(self):
         pass
-        self.startTempMeasuring()
+        self.start_tempMeasuring()
 
-    def thresholdViolated(self):
+    def threshold_violated(self):
         pycom.rgbled(0xffffff)
 
-    def thresholdSatisfied(self):
+    def threshold_satisfied(self):
         pycom.rgbled(0x000000)
 
-    def setThresholds(self, lower, upper):
+    def set_thresholds(self, lower, upper):
         self.lowerTempThreshold = lower
         self.upperTempThreshold = upper
         #self.startTempMeasuring()
 
-    def startTempMeasuring(self):
+    def start_tempMeasuring(self):
         temp_measurer.begin_measure(self)
 
-    def getLocation(self):
+    def get_location(self):
         return self.location

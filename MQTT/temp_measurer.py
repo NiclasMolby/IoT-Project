@@ -15,9 +15,9 @@ def begin_thread(cup):
         print("Temp: " + str(temp))
         if cup.lowerTempThreshold is not None:
                 if cup.lowerTempThreshold > temp:
-                        cup.thresholdViolated()
+                        cup.threshold_violated()
                 else:
-                        cup.thresholdSatisfied()
+                        cup.threshold_satisfied()
         #print((val - 500)/10)
         #print(((val * 1100) / 4096 - 500) / 10)
         time.sleep(2)

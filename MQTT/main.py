@@ -27,5 +27,5 @@ for net in nets:
         if wlan.isconnected():
             print('Connected!\n')
             print("Initializing MQTT\n")
-            mqtt_handler.initMQTT()
+            mqtt_handler.init_MQTT()
     
