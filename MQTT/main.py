@@ -1,11 +1,11 @@
 from network import WLAN
-import mqtt_handler
+from mqtt_handler import MQTT
 
 import pycom
 import time
 import json
 import sys
-#print(sys.version)
+print(sys.version)
 
 pycom.heartbeat(False)
 
@@ -16,6 +16,7 @@ nets = wlan.scan()
 print()
 
 for net in nets:
+    print("Searching...")
     if net.ssid == data["ssid"]:
         print('Network found!')
         wlan.connect(net.ssid, auth=(net.sec, data["password"]), timeout=5000)
@@ -26,6 +27,5 @@ for net in nets:
         
         if wlan.isconnected():
             print('Connected!\n')
-            print("Initializing MQTT\n")
-            mqtt_handler.init_MQTT()
+            MQTT().init_MQTT() 
     

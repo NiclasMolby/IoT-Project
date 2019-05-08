@@ -3,36 +3,40 @@ from cup import Cup
 import time
 from lib.mqtt import MQTTClient
 
-cup = None
-client = None
+class MQTT:
+        cup = None
+        client = None
 
-topicMap = {
-    "cleverCup/location": on_message_location,
-    "cleverCup/threshold": on_message_threshold
-}
+        def init_MQTT(self):
+                self.client = MQTTClient("CleverCup", "broker.hivemq.com", port=1883)
+                self.client.set_callback(self.on_message)
+                self.client.connect()
+                self.subscribe(self.client)
+                self.cup = Cup(self.publish_message)
+                print("Initializing MQTT\n")
 
-def init_MQTT():
-    client = MQTTClient("CleverCup", "broker.hivemq.com", port=1883)
-    client.set_callback(on_message)
-    client.connect()
-    #client.subscribe(topic="cleverCup/location")
-    subscribe(client)
-    cup = Cup()
+                while True:
+                        self.client.check_msg()
 
-    while True:
-        client.check_msg()
+        def publish_message(self, topic, msg):
+                self.client.publish(topic, msg)
+                
+        def on_message(self, topic, msg):
+                print("Message: " + str(msg.decode()))
+                self.topicMap[topic.decode()](self, msg)
 
-def on_message(topic, msg):
-    topicMap[topic](msg)
-    print("Message: " + str(msg))
+        def on_message_location(self, msg):
+                self.client.publish("cleverCup/location/response", str(self.cup.get_location()))
 
-def on_message_location(msg):
-    client.publish("cleverCup/location/response", cup.get_location())
+        def on_message_threshold(self, msg):
+                thresholds = json.loads(str(msg.decode()))
+                self.cup.set_thresholds(thresholds['lower'], thresholds['upper'])
 
-def on_message_threshold(msg):
-    thresholds = json.loads(str(msg))
-    cup.set_thresholds(thresholds['lower'], thresholds['upper'])
+        topicMap = {
+                "cleverCup/location": on_message_location,
+                "cleverCup/threshold": on_message_threshold
+        }
 
-def subscribe(client):
-    for key in topicMap.keys(): 
-        client.subscribe(topic=key)
+        def subscribe(self, client):
+                for key in self.topicMap.keys(): 
+                        client.subscribe(topic=key)
