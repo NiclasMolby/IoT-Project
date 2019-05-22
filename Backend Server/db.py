@@ -8,6 +8,23 @@ mydb = mysql.connector.connect(
   database="sql7291043"
 )
 
+def get_movement_data():
+  mycursor = mydb.cursor()
+  sql = "SELECT drinking, timestamp FROM movement"
+  mycursor.execute(sql)
+
+  result = mycursor.fetchall()
+  print(len(result))
+  jsonList = []
+  for x in result:
+    jsonList.append({
+      "mode": x[0],
+      "timestamp": x[1]
+    })
+  mydb.commit()
+  mycursor.close()
+  return jsonList
+
 def insert_movement_data(data):
     mycursor = mydb.cursor()
     sql = "INSERT INTO movement (cup, drinking, timestamp) VALUES (%s, %s, %s)"
